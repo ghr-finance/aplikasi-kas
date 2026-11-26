@@ -1,0 +1,56 @@
+// ==========================================
+// THEME & DESIGN SYSTEM (Fintech SaaS Style)
+// Diadaptasi dari desain modern dashboard
+// ==========================================
+
+// Colors
+$bg-body: #f8fafc;
+$bg-card: #ffffff;
+$bg-sidebar: #ffffff;
+
+// Primary Accent (Vibrant Blue)
+$primary: #2563eb;
+$primary-hover: #1d4ed8;
+$primary-light: #eff6ff;
+$primary-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+$primary-bar-gradient: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+$primary-bar-muted: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 100%);
+
+// Status Colors
+$success: #10b981;
+$success-light: #ecfdf5;
+$success-text: #047857;
+
+$danger: #ef4444;
+$danger-light: #fef2f2;
+$danger-text: #b91c1c;
+
+$warning: #f59e0b;
+$warning-light: #fffbeb;
+$warning-text: #b45309;
+
+$info: #06b6d4;
+$info-light: #ecfeff;
+$info-text: #0e7490;
+
+// Neutrals
+$text-main: #0f172a;
+$text-muted: #64748b;
+$text-light: #94a3b8;
+$border-color: #f1f5f9;
+$border-hover: #e2e8f0;
+$border-focus: #3b82f6;
+
+// Elevations & Radius
+$radius-xs: 6px;
+$radius-sm: 10px;
+$radius-md: 14px;
+$radius-lg: 20px;
+$radius-xl: 24px;
+$radius-full: 9999px;
+
+$shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.02);
+$shadow-hover: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+$shadow-modal: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+
+$sidebar-width: 250px;

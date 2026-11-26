@@ -1,0 +1,262 @@
+@use "sass:map";
+@use "variables" as *;
+@use "mixins" as *;
+
+$table-border-color: #dee2e6;
+$table-header-bg: #f8f9fa;
+$table-cell-padding: .35em .75em;
+$table-card-radius: .5em;
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: $table-card-radius;
+  overflow: hidden;
+  box-shadow: 1px 1px 0 1px $table-border-color;
+
+  th,
+  td {
+    padding: $table-cell-padding;
+    border: 1px solid $table-border-color;
+    font-size: 11px;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  thead {
+    background-color: $table-header-bg;
+
+    th {
+      font-weight: 600;
+      color: #495057;
+      border-bottom: 2px solid $table-border-color;
+    }
+  }
+
+  tbody tr {
+    transition: background-color 0.15s ease-in-out;
+
+    &:hover {
+      background-color: #f8f9fa;
+    }
+
+    td {
+
+      &[data-label="No. Anggota"],
+      &[data-label="Tanggal"],
+      &[data-label="Telepon"],
+      &[data-label="Jumlah"],
+      &[data-label="Dibuat"],
+      &[data-label="Alokasi Budget"],
+      &[data-label="Realisasi Belanja"],
+      &[data-label="Sisa Anggaran"],
+      &[data-label="Penyerapan"],
+      &[data-label="Diperbarui"] {
+        font-family: $font-number;
+      }
+
+      &[data-label="Periode / Durasi"] {
+        small {
+          font-family: $font-number;
+        }
+      }
+
+      button,
+      .btn {
+        font-size: 1em;
+        padding: 0.5em 0.75em;
+      }
+    }
+  }
+
+  // Tombol Aksi di tabel
+  .aksi-wrapper {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+
+    button {
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 6px;
+      border: none;
+      transition: opacity 0.2s, transform 0.1s;
+
+      &:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    .btn-edit {
+      background-color: #0d6efd;
+      color: #ffffff;
+      box-shadow: none;
+    }
+
+    .btn-hapus {
+      background-color: #dc3545;
+      color: #ffffff;
+      box-shadow: none;
+    }
+  }
+
+  // ==========================================
+  // RESPONSIVE: Card View untuk Small Screen
+  // ==========================================
+  @include screen-down(md) {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+
+    thead {
+      display: none; // Sembunyikan header tabel konvensional
+    }
+
+    tbody,
+    tr,
+    td {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    // Setiap baris transaksi diubah menjadi 1 Card mandiri
+    tr {
+      margin-bottom: 16px;
+      border: 1px solid $table-border-color;
+      border-radius: $table-card-radius;
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+
+      &:hover {
+        background-color: #ffffff; // Pertahankan warna kartu saat hover
+      }
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border: none;
+      border-bottom: 1px solid #f1f3f5;
+      text-align: right;
+      font-size: .85rem;
+
+      // Label di sisi kiri kartu dari atribut data-label
+      &::before {
+        content: attr(data-label);
+        font-weight: 600;
+        text-align: left;
+        color: #495057;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+
+      // Baris terakhir (kolom aksi) di dalam kartu
+      &:last-child {
+        border-bottom: none;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        background-color: #fafbfc;
+      }
+
+      .aksi-wrapper {
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  &.daftar-event-tbl {
+    @include screen-down(xl) {
+      border: none;
+      background: transparent;
+      box-shadow: none;
+
+      thead {
+        display: none; // Sembunyikan header tabel konvensional
+      }
+
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      // Setiap baris transaksi diubah menjadi 1 Card mandiri
+      tr {
+        margin-bottom: 16px;
+        border: 1px solid $table-border-color;
+        border-radius: $table-card-radius;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+
+        &:hover {
+          background-color: #ffffff; // Pertahankan warna kartu saat hover
+        }
+      }
+
+      td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        border: none;
+        border-bottom: 1px solid #f1f3f5;
+        text-align: right;
+        font-size: .85rem;
+
+        // Label di sisi kiri kartu dari atribut data-label
+        &::before {
+          content: attr(data-label);
+          font-weight: 600;
+          text-align: left;
+          color: #495057;
+          font-size: 13px;
+          flex-shrink: 0;
+        }
+
+        // Baris terakhir (kolom aksi) di dalam kartu
+        &:last-child {
+          border-bottom: none;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          background-color: #fafbfc;
+        }
+
+        .aksi-wrapper {
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+}
+
+// Wrapper tabel horizontal scroll (opsional jika card view tidak digunakan)
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+
+// Wrapper tabel horizontal scroll (opsional jika card view tidak digunakan)
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}

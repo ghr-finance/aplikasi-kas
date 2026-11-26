@@ -1,0 +1,95 @@
+@use "theme" as *;
+@use "variables" as *;
+@use "mixins" as *;
+@use "grid" as *;
+@use "card" as *;
+@use "form" as *;
+@use "button" as *;
+@use "layout" as *;
+@use "dashboard" as *;
+@use "table" as *;
+@use "card_info" as *;
+@use "tabs" as *;
+@use "modal" as *;
+@use "report_pdf" as *;
+@use "settings" as *;
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.is-number {
+  font-family: $font-number !important;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $bg-body;
+  color: $text-main;
+  font-family: $font-body;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+}
+
+// Button Global
+button {
+  font-family: inherit;
+}
+
+// Data Table Wrapper Styling
+.table-card-container {
+  background: #ffffff;
+  border: 1px solid $border-color;
+  border-radius: $radius-xl;
+  padding: 1.5rem;
+  box-shadow: $shadow-card;
+  margin-bottom: 2rem;
+
+  .table-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    h3 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: $text-main;
+    }
+
+    .table-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      .search-table-input {
+        flex: 1;
+        padding: 0.5rem 0.85rem;
+        border: 1px solid $border-color;
+        border-radius: $radius-full;
+        font-size: 0.85rem;
+        background: #f8fafc;
+        outline: none;
+
+        &:focus {
+          border-color: $primary;
+          background: #ffffff;
+        }
+      }
+    }
+  }
+}

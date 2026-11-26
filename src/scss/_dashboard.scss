@@ -1,0 +1,662 @@
+@use "theme" as *;
+@use "variables" as *;
+@use "mixins" as *;
+
+// ==========================================
+// DASHBOARD HERO HEADER
+// ==========================================
+.dash-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  .hero-info {
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $text-main;
+      margin: 0 0 0.35rem 0;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: $text-muted;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+
+      span {
+        display: flex;
+        align-items: center;
+        gap: 0.25em;
+
+        &.hero-bullet {
+          color: $text-light;
+          font-size: 1.5rem;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+}
+
+// ==========================================
+// METRIC CARDS ROW (4 Kartu Utama)
+// ==========================================
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+
+  @include screen-down(xl) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include screen-down(sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpi-card {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+  padding: 1.25em 1.5em;
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &.kpi-card {
+    &--saldo {
+      background: $primary-bar-muted;
+      border-left: 2px solid $primary;
+
+      .kpi-header {
+        .kpi-icon {
+          color: $primary-hover;
+        }
+
+        .kpi-title {
+          color: $text-main;
+        }
+      }
+
+      .kpi-trend {
+        .trend-label {
+          color: $text-main;
+        }
+      }
+    }
+
+    &--pemasukan {
+      border-left: 2px solid $success-light;
+
+      .kpi-header {
+        .kpi-icon {
+          color: $success-text;
+        }
+      }
+    }
+
+    &--pengeluaran {
+      border-left: 2px solid $danger-light;
+
+      .kpi-header {
+        .kpi-icon {
+          color: $danger-text;
+        }
+      }
+    }
+
+    &--arus-kas {
+      border-left: 2px solid $info-light;
+
+      .kpi-header {
+        .kpi-icon {
+          color: $info-text;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-hover;
+  }
+
+  .kpi-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+
+    .kpi-icon {
+      width: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      color: $text-muted;
+    }
+
+    .kpi-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: $text-muted;
+    }
+  }
+
+  .kpi-value {
+    font-size: 1.65rem;
+    color: $text-main;
+    letter-spacing: -0.1em;
+    line-height: 1.2;
+    font-family: $font-number;
+  }
+
+  .kpi-trend {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    .trend-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+
+      &.up {
+        background-color: $danger-light;
+        color: $danger-text;
+      }
+
+      &.down {
+        background-color: $success-light;
+        color: $success-text;
+      }
+
+      &.neutral {
+        background-color: $primary-light;
+        color: $primary;
+      }
+    }
+
+    .trend-label {
+      color: $text-light;
+      font-weight: 500;
+    }
+  }
+}
+
+// ==========================================
+// DUAL GRID SECTION (2 Kolom: Kiri Lebar, Kanan Sedang)
+// ==========================================
+.dash-row-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+
+  @include screen-down(lg) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Card Wrapper Umum
+.dash-card {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $radius-xl;
+  padding: 1.5rem;
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+
+  .dash-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+
+    .dash-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: $text-main;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dash-card-subtitle {
+      font-size: 0.8rem;
+      color: $text-muted;
+      margin-top: 0.25rem;
+    }
+
+    .dash-card-opt {
+      color: $text-light;
+      cursor: pointer;
+      font-size: 1.1rem;
+      border: none;
+      background: transparent;
+      padding: 0.2rem;
+      border-radius: 4px;
+
+      &:hover {
+        color: $text-main;
+        background: #f1f5f9;
+      }
+    }
+  }
+}
+
+// ==========================================
+// PILL BAR CHART (12 BULAN PERSIS SEPERTI GAMBAR)
+// ==========================================
+.chart-card-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75em;
+  margin-bottom: 1.5rem;
+
+  @include screen-down(md) {
+    flex-wrap: wrap;
+
+    .chart-big-metric {
+      flex: none;
+      width: 100%;
+    }
+  }
+
+  .chart-big-metric {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: $text-main;
+    letter-spacing: -0.03em;
+    font-family: $font-number;
+  }
+
+  .chart-metric-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: $radius-full;
+    font-size: 0.75rem;
+    font-family: $font-number;
+    background: $primary-light;
+    color: $primary;
+  }
+
+  .chart-subtext {
+    font-size: 0.8rem;
+    color: $text-muted;
+  }
+}
+
+.pill-chart-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem;
+  height: 220px;
+  padding: 1.5rem 0.5rem 0;
+  position: relative;
+  border-bottom: 1px solid $border-color;
+
+  // Background Grid Lines
+  &::before {
+    content: "";
+    position: absolute;
+    top: 25%;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed #f1f5f9;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 60%;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed #f1f5f9;
+    pointer-events: none;
+  }
+
+  .chart-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 1;
+
+    .bar-pill {
+      width: 100%;
+      max-width: 44px;
+      border-radius: 20px;
+      background: $primary-light;
+      transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0.25em;
+      font-family: $font-number;
+
+      .bar-pct {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #1e40af;
+        user-select: none;
+      }
+
+      &:hover {
+        filter: brightness(0.95);
+      }
+    }
+
+    // Active Bar Highlight (Bulan Ini)
+    &.active {
+      .bar-pill {
+        background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+
+        .bar-pct {
+          color: #ffffff;
+        }
+      }
+
+      // Floating Dark Tooltip
+      .floating-tooltip {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        background: #0f172a;
+        color: #ffffff;
+        font-size: 0.75rem;
+        padding: 0.35rem 0.65rem;
+        border-radius: $radius-full;
+        white-space: nowrap;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+        z-index: 10;
+        font-family: $font-number;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          border: 4px solid transparent;
+          border-top-color: #0f172a;
+        }
+      }
+    }
+
+    .col-label {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: $text-light;
+      text-transform: uppercase;
+
+      &.active {
+        color: $primary;
+      }
+    }
+  }
+}
+
+// ==========================================
+// HEALTH CARD (Kanan Atas)
+// ==========================================
+.health-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .health-main-val {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: $text-main;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+
+    span {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: $text-muted;
+    }
+  }
+
+  .health-subtitle {
+    font-size: 0.8rem;
+    color: $text-muted;
+  }
+
+  // Progress Bar
+  .progress-wrap {
+    margin: 0.5rem 0;
+
+    .progress-bar-bg {
+      height: 10px;
+      border-radius: $radius-full;
+      background: #f1f5f9;
+      overflow: hidden;
+
+      .progress-bar-fill {
+        height: 100%;
+        border-radius: $radius-full;
+        background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
+        transition: width 0.6s ease;
+      }
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: $text-muted;
+      margin-top: 0.4rem;
+    }
+  }
+
+  // Breakdown List
+  .health-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    border-top: 1px solid $border-color;
+    padding-top: 1rem;
+
+    .health-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+
+      .item-label {
+        color: $text-muted;
+      }
+
+      .item-val {
+        font-weight: 700;
+        color: $text-main;
+        font-family: $font-number;
+      }
+    }
+  }
+}
+
+// ==========================================
+// CATEGORY TABLE & RECENT ACTIVITY (Bawah)
+// ==========================================
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $text-light;
+    text-align: left;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid $border-color;
+  }
+
+  td {
+    padding: 0.85rem 0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #f8fafc;
+    vertical-align: middle;
+
+    .cat-name-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 600;
+      color: $text-main;
+
+      .cat-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+      }
+    }
+
+    .cat-amount {
+      font-weight: 700;
+      color: $text-main;
+      font-family: $font-number;
+    }
+
+    .cat-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+
+      &.watch {
+        background: #fef3c7;
+        color: #d97706;
+      }
+
+      &.over {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      &.near {
+        background: #e0e7ff;
+        color: #4f46e5;
+      }
+
+      &.safe {
+        background: #dcfce7;
+        color: #15803d;
+      }
+    }
+  }
+}
+
+// Recent Activity List
+.activity-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+
+  .activity-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+
+    .act-bullet {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 0.35rem;
+      flex-shrink: 0;
+
+      &.masuk {
+        background-color: $success;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+      }
+
+      &.keluar {
+        background-color: $danger;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+      }
+    }
+
+    .act-content {
+      flex: 1;
+      line-height: 1.3;
+
+      .act-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: $text-main;
+
+        .act-highlight {
+          color: $primary;
+        }
+      }
+
+      .act-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.25em;
+        font-size: 0.75em;
+        color: $text-light;
+
+        span {
+          display: flex;
+          align-items: center;
+
+          &.dot-small {
+            font-size: 0.85rem;
+          }
+        }
+      }
+    }
+
+    .act-amount {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-align: right;
+      white-space: nowrap;
+      font-family: $font-number;
+
+      &.masuk {
+        color: $success-text;
+      }
+
+      &.keluar {
+        color: $danger-text;
+      }
+    }
+  }
+}

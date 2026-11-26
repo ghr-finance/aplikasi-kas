@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,300;1,62.5..100,300&family=Noto+Serif:ital,wght@0,300;1,300&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+%noto-sans {
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100%;
+}
+
+%noto-sans-condensed {
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 75%;
+}
+
+$font-body: "Noto Sans", sans-serif;
+$font-serif: "Noto Serif", serif;
+$font-number: "Roboto Mono", monospace;
+
+$breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);

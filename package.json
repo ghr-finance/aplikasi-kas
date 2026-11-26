@@ -1,0 +1,29 @@
+{
+  "name": "aplikasi-kas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "node app.js",
+    "build": "npm run scss:build",
+    "db:migrate": "node scripts/migrate.js",
+    "scss:dev": "sass --watch src/scss/main.scss public/css/style.css --style=expanded",
+    "scss:build": "sass src/scss/main.scss public/css/style.css --style=compressed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@hugeicons/core-free-icons": "^4.4.0",
+    "@hugeicons/react": "^1.1.10",
+    "@picocss/pico": "^2.1.1",
+    "express": "^5.3.0",
+    "mysql2": "^3.24.6"
+  },
+  "devDependencies": {
+    "sass": "^1.108.2"
+  }
+}

@@ -1,0 +1,573 @@
+@use "theme" as *;
+
+// ============================================================
+// BUTTON DESIGN SYSTEM
+// Lengkap dengan CTA Button, Varian Warna, Ukuran & States
+// ============================================================
+
+// ------------------------------------------------------------
+// 1. BASE BUTTON (Class .btn dan Tag Button Otomatis Ter-style)
+// ------------------------------------------------------------
+.btn,
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  box-sizing: border-box;
+  padding: 0.6em 1.15em;
+  border-radius: $radius-sm;
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  background-color: #f1f5f9;
+  color: $text-main;
+
+  // Global Focus Ring (Aksesibilitas Keyboard)
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  }
+
+  // Active / Pressed State
+  &:active,
+  &.active {
+    transform: translateY(1px);
+  }
+
+  // Disabled State
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  // Loading State dengan Spinner CSS
+  &.is-loading,
+  &.loading {
+    color: transparent !important;
+    pointer-events: none;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 1em;
+      height: 1em;
+      top: calc(50% - 0.5em);
+      left: calc(50% - 0.5em);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: currentColor;
+      animation: btn-spin 0.65s linear infinite;
+    }
+  }
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ------------------------------------------------------------
+// 2. CTA (CALL-TO-ACTION) BUTTON
+// Tombol aksi prioritas tinggi dengan glow dan daya tarik visual
+// ------------------------------------------------------------
+.btn-cta,
+.btn-action-primary {
+  @extend .btn;
+  background: $primary-gradient !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: $radius-full !important;
+  // padding: 0.65em 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+
+  &:hover {
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+  }
+
+  &:active,
+  &.active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35), 0 4px 14px rgba(37, 99, 235, 0.3);
+  }
+
+  // CTA Pulse Effect (Opsional untuk aksi utama)
+  &.btn-pulse {
+    animation: cta-pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  }
+}
+
+.btn-cta-secondary {
+  @extend .btn-cta;
+  background: $primary-bar-muted !important;
+  color: $text-main !important;
+  box-shadow: inset 0 0 1px 1px rgba(37, 99, 235, 0.35);
+
+
+  &:hover {
+    color: $text-main !important;
+    box-shadow: inset 0 0 1px 1px rgba(37, 99, 235, 0.35);
+  }
+
+  &:active,
+  &.active {
+    color: $text-main !important;
+    box-shadow: inset 0 0 1px 1px rgba(37, 99, 235, 0.35);
+  }
+}
+
+// Tombol Export Universal
+.btn-export {
+  @extend .btn;
+  background-color: #ffffff !important;
+  border: 1px solid $border-color !important;
+  color: $text-main !important;
+  border-radius: $radius-full !important;
+  // padding: 0.55rem 1rem;
+
+  &:hover {
+    background-color: #f8fafc !important;
+    border-color: $border-hover !important;
+  }
+}
+
+@keyframes cta-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  }
+
+  50% {
+    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.65);
+  }
+}
+
+// ------------------------------------------------------------
+// 3. COLOR VARIANTS (SOLID / FILLED)
+// Otomatis mewarisi sifat dasar .btn
+// ------------------------------------------------------------
+
+// Primary (Brand Blue)
+.btn-primary {
+  @extend .btn;
+  background-color: $primary;
+  color: #ffffff;
+  border-color: $primary;
+
+  &:hover {
+    background-color: $primary-hover;
+    border-color: $primary-hover;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
+  }
+}
+
+// Secondary (Neutral Slate / Abu-abu modern)
+.btn-secondary {
+  @extend .btn;
+  background-color: #64748b;
+  color: #ffffff;
+  border-color: #64748b;
+
+  &:hover {
+    background-color: #475569;
+    border-color: #475569;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(100, 116, 139, 0.2);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.3);
+  }
+}
+
+// Success (Hijau Kas Masuk)
+.btn-success {
+  @extend .btn;
+  background-color: $success;
+  color: #ffffff;
+  border-color: $success;
+
+  &:hover {
+    background-color: #059669;
+    border-color: #059669;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35);
+  }
+}
+
+// Danger (Merah Kas Keluar / Destruktif)
+.btn-danger {
+  @extend .btn;
+  background-color: $danger;
+  color: #ffffff;
+  border-color: $danger;
+
+  &:hover {
+    background-color: #dc2626;
+    border-color: #dc2626;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.35);
+  }
+}
+
+// Warning (Kuning/Oranye Peringatan)
+.btn-warning {
+  @extend .btn;
+  background-color: $warning;
+  color: #ffffff;
+  border-color: $warning;
+
+  &:hover {
+    background-color: #d97706;
+    border-color: #d97706;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.35);
+  }
+}
+
+// Info (Cyan / Informasi)
+.btn-info {
+  @extend .btn;
+  background-color: $info;
+  color: #ffffff;
+  border-color: $info;
+
+  &:hover {
+    background-color: #0891b2;
+    border-color: #0891b2;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.25);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.35);
+  }
+}
+
+// Dark (Gelap / Kontras Tinggi)
+.btn-dark {
+  @extend .btn;
+  background-color: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+
+  &:hover {
+    background-color: #1e293b;
+    border-color: #1e293b;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.35);
+  }
+}
+
+// Light (Terang / Kartu Netral)
+.btn-light {
+  @extend .btn;
+  background-color: #f8fafc;
+  color: $text-main;
+  border-color: $border-color;
+
+  &:hover {
+    background-color: #f1f5f9;
+    border-color: $border-hover;
+    color: $text-main;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(203, 213, 225, 0.5);
+  }
+}
+
+// ------------------------------------------------------------
+// 4. OUTLINE VARIANTS (BORDERED)
+// ------------------------------------------------------------
+
+.btn-outline-primary {
+  background-color: transparent;
+  color: $primary;
+  border-color: $primary;
+
+  &:hover {
+    background-color: $primary;
+    color: #ffffff;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+  }
+}
+
+.btn-outline-secondary {
+  background-color: transparent;
+  color: #64748b;
+  border-color: #cbd5e1;
+
+  &:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+    color: #334155;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.25);
+  }
+}
+
+.btn-outline-danger {
+  background-color: transparent;
+  color: $danger;
+  border-color: #fca5a5;
+
+  &:hover {
+    background-color: $danger;
+    border-color: $danger;
+    color: #ffffff;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+  }
+}
+
+.btn-outline-success {
+  background-color: transparent;
+  color: $success;
+  border-color: #6ee7b7;
+
+  &:hover {
+    background-color: $success;
+    border-color: $success;
+    color: #ffffff;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+  }
+}
+
+// ------------------------------------------------------------
+// 5. SOFT / SUBTLE VARIANTS (Modern SaaS Tinted Pill)
+// ------------------------------------------------------------
+
+.btn-soft-primary {
+  background-color: $primary-light;
+  color: $primary;
+  border-color: transparent;
+
+  &:hover {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  }
+}
+
+.btn-soft-success {
+  background-color: $success-light;
+  color: $success-text;
+  border-color: transparent;
+
+  &:hover {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+}
+
+.btn-soft-danger {
+  background-color: $danger-light;
+  color: $danger-text;
+  border-color: transparent;
+
+  &:hover {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+  }
+}
+
+.btn-soft-warning {
+  background-color: $warning-light;
+  color: $warning-text;
+  border-color: transparent;
+
+  &:hover {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+  }
+}
+
+// ------------------------------------------------------------
+// 6. GHOST & LINK VARIANTS
+// ------------------------------------------------------------
+
+.btn-ghost {
+  background-color: transparent;
+  color: $text-muted;
+  border-color: transparent;
+
+  &:hover {
+    background-color: #f1f5f9;
+    color: $text-main;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2);
+  }
+}
+
+.btn-link {
+  background-color: transparent;
+  color: $primary;
+  border-color: transparent;
+  padding: 0;
+  font-weight: 500;
+
+  &:hover {
+    color: $primary-hover;
+    text-decoration: underline;
+    background-color: transparent;
+  }
+
+  &:focus-visible {
+    outline: auto;
+  }
+}
+
+// ------------------------------------------------------------
+// 7. SIZES & SHAPES
+// ------------------------------------------------------------
+
+// Extra Small (Badge / Table Micro Action)
+.btn-xs {
+  // padding: 0.25rem 0.55rem;
+  font-size: 0.65em;
+  border-radius: $radius-xs;
+  gap: 0.3rem;
+}
+
+// Small (Kerap dipakai di tabel & filter)
+.btn-sm {
+  font-size: 0.7em;
+  border-radius: $radius-xs;
+  gap: 0.35rem;
+}
+
+// Medium (Default - eksplisit)
+.btn-md {
+  font-size: 0.875em;
+  border-radius: $radius-sm;
+}
+
+// Large (Form Submit & Dialog)
+.btn-lg {
+  font-size: 1rem;
+  border-radius: $radius-md;
+}
+
+// Extra Large (Landing / Prominent Hero)
+.btn-xl {
+  font-size: 1.125em;
+  border-radius: $radius-md;
+}
+
+// Shape: Full Pill Rounded
+.btn-pill {
+  border-radius: $radius-full;
+}
+
+// Shape: Square Icon Button
+.btn-square {
+  padding: 0;
+  width: 2.35em;
+  height: 2.35em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-sm;
+
+  &.btn-sm {
+    width: 1.85em;
+    height: 1.85em;
+  }
+
+  &.btn-lg {
+    width: 2.85em;
+    height: 2.85em;
+  }
+}
+
+// Shape: Circle Icon Button
+.btn-circle {
+  @extend .btn-square;
+  border-radius: 50%;
+}
+
+// Block / Full Width
+.btn-block,
+.btn-full {
+  display: flex;
+  width: 100%;
+}

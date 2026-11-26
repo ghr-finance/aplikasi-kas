@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KasKu — Modern Financial Management</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css" />
+</head>
+
+<body>
+  <div class="app-layout">
+
+    <!-- Mobile Overlay Backdrop -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- SIDEBAR (Kiri)                                                 -->
+    <!-- ============================================================== -->
+    <aside id="sidebar" class="sidebar">
+      <!-- Logo & Brand Header -->
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <i class="hgi hgi-stroke hgi-rounded hgi-credit-card-pos"></i>
+        </div>
+        <div class="brand-text">KasKu</div>
+      </div>
+
+      <!-- Quick Search Bar -->
+      <div class="sidebar-search">
+        <span class="search-icon">
+          <i class="hgi hgi-stroke hgi-rounded hgi-search-01"></i>
+        </span>
+        <input type="text" id="quickSearchInput" placeholder="Cari transaksi..." autocomplete="off">
+        <span class="search-kbd">Ctrl+K</span>
+      </div>
+
+      <!-- Navigasi Menu Utama -->
+      <div class="nav-group">
+        <div class="nav-label">Menu Utama</div>
+        <ul class="nav-list">
+          <li>
+            <button type="button" class="nav-item-btn active" data-tab="tab-overview">
+              <span class="nav-icon">
+                <i class="hgi hgi-stroke hgi-rounded hgi-chart"></i>
+              </span>
+              <span>Overview</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="tab-transaksi">
+              <span class="nav-icon">
+                <i class="hgi hgi-stroke hgi-rounded hgi-file-02"></i>
+              </span>
+              <span>Transaksi Kas</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="tab-anggota">
+              <span class="nav-icon">
+                <i class="hgi hgi-stroke hgi-rounded hgi-user-03"></i>
+              </span>
+              <span>Data Anggota</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="tab-pos">
+              <span class="nav-icon">
+                <i class="hgi hgi-stroke hgi-rounded hgi-invoice-03"></i>
+              </span>
+              <span>Pos Pengeluaran</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="tab-event">
+              <span class="nav-icon">
+                <i class="hgi hgi-stroke hgi-rounded hgi-flag-02"></i>
+              </span>
+              <span>Event & Budget</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-label">Manajemen</div>
+        <ul class="nav-list">
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="tab-settings">
+              <span class="nav-icon">
+                <i class="hgi hgi-stroke hgi-rounded hgi-settings-02"></i>
+              </span>
+              <span>Pengaturan Keuangan</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" onclick="bukaModalLaporanPdf()">
+              <span class="nav-icon">
+                <i class="hgi hgi-stroke hgi-rounded hgi-file-02"></i>
+              </span>
+              <span>Laporan Kas PDF</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Bagian Bawah Sidebar (Info Box & Profile) -->
+      <div class="sidebar-bottom">
+        <div class="support-card">
+          <div class="support-title">
+            <span>
+              <i class="hgi hgi-stroke hgi-rounded hgi-knight-shield"></i>
+            </span>
+            <span>Kas Aman & Tercatat</span>
+          </div>
+          <div class="support-desc">
+            Sistem pencatatan kas organisasi berbasis MVC & MySQL.
+          </div>
+          <button type="button" class="btn-support" onclick="bukaModalTransaksi()">
+            <i class="hgi hgi-stroke hgi-rounded hgi-plus"></i> Catat Cepat
+          </button>
+        </div>
+
+        <div class="sidebar-user">
+          <div class="user-avatar">AD</div>
+          <div class="user-info">
+            <span class="user-name">Pengelola Kas</span>
+            <span class="user-role">Administrator</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============================================================== -->
+    <!-- MAIN CONTENT AREA (Kanan)                                      -->
+    <!-- ============================================================== -->
+    <div class="main-wrapper">
+
+      <!-- Top Bar Header Sticky -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button type="button" id="btnToggleSidebar" class="btn-mobile-menu" aria-label="Menu">
+            <i class="hgi hgi-stroke hgi-rounded hgi-menu-collapse"></i>
+          </button>
+          <div class="topbar-title" id="pageTitle">
+            <span><i class="hgi hgi-stroke hgi-rounded hgi-chart-analysis"></i></span>
+            <span>Overview Kas Organisasi</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Filter Periode Bulan -->
+          <div class="topbar-right-item date-filter-wrapper" title="Pilih Periode Bulan">
+            <input type="month" id="filterBulan">
+          </div>
+
+          <!-- Tombol Export / Laporan PDF -->
+          <button type="button" class="topbar-right-item btn btn-light btn-pill main-export-btn"
+            onclick="bukaModalLaporanPdf()">
+            <span class="hide-on-mobile">Laporan PDF</span>
+            <span><i class="hgi hgi-stroke hgi-rounded hgi-file-02"></i></span>
+          </button>
+
+          <!-- Tombol Utama Catat Transaksi (CTA) -->
+          <button type="button" class="topbar-right-item btn btn-cta main-cta-btn" onclick="bukaModalTransaksi()">
+            <span> <i class="hgi hgi-stroke hgi-rounded hgi-plus"></i> </span>
+            <span class="hide-on-mobile">Catat Transaksi</span>
+          </button>
+
+          <!-- User Avatar -->
+          <div class="topbar-avatar" title="Akun Pengelola">
+            AD
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Views -->
+      <main class="content-area">
+
+        <!-- ========================================================== -->
+        <!-- VIEW 1: OVERVIEW DASHBOARD (PERSIS DESAIN FINTECH MOCKUP) -->
+        <!-- ========================================================== -->
+        <section id="tab-overview" class="tab-content active">
+
+          <!-- Hero Info -->
+          <div class="dash-hero">
+            <div class="hero-info">
+              <h1 id="heroTitle">Catatan Kas Organisasi</h1>
+              <p id="heroSubtitle">
+                <span>Memuat data ringkasan kas...</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Row 1: 4 Metric KPI Cards -->
+          <div class="metric-grid">
+            <!-- Saldo Kas Total -->
+            <div class="kpi-card kpi-card--saldo">
+              <div class="kpi-header">
+                <div class="kpi-icon">
+                  <i class="hgi hgi-stroke hgi-rounded hgi-wallet-02"></i>
+                </div>
+                <div class="kpi-title">Total Saldo Kas</div>
+              </div>
+              <div class="kpi-value" id="kpiSaldoTotal">Rp0</div>
+              <div class="kpi-trend">
+                <span class="trend-badge neutral">Akumulasi</span>
+                <span class="trend-label">Seluruh Periode</span>
+              </div>
+            </div>
+
+            <!-- Pemasukan MTD -->
+            <div class="kpi-card kpi-card--pemasukan">
+              <div class="kpi-header">
+                <div class="kpi-icon">
+                  <i class="hgi hgi-stroke hgi-rounded hgi-money-send-square"></i>
+                </div>
+                <div class="kpi-title">Pemasukan Bulan Ini</div>
+              </div>
+              <div class="kpi-value" id="kpiMasukBulan">Rp0</div>
+              <div class="kpi-trend">
+                <span class="trend-badge down">
+                  <i class="hgi hgi-stroke hgi-rounded hgi-arrow-down-left-01"></i>
+                  Masuk
+                </span>
+                <span class="trend-label" id="kpiJumlahTxMasuk">0 transaksi</span>
+              </div>
+            </div>
+
+            <!-- Pengeluaran MTD -->
+            <div class="kpi-card kpi-card--pengeluaran">
+              <div class="kpi-header">
+                <div class="kpi-icon">
+                  <i class="hgi hgi-stroke hgi-rounded hgi-money-send-square"></i>
+                </div>
+                <div class="kpi-title">Pengeluaran Bulan Ini</div>
+              </div>
+              <div class="kpi-value" id="kpiKeluarBulan">Rp0</div>
+              <div class="kpi-trend">
+                <span class="trend-badge up">
+                  <i class="hgi hgi-stroke hgi-rounded hgi-arrow-up-right-01"></i>
+                  Belanja
+                </span>
+                <span class="trend-label" id="kpiJumlahTxKeluar">0 transaksi</span>
+              </div>
+            </div>
+
+            <!-- Arus Kas Bersih (Surplus / Defisit) -->
+            <div class="kpi-card kpi-card--arus-kas">
+              <div class="kpi-header">
+                <div class="kpi-icon">
+                  <i class="hgi hgi-stroke hgi-rounded hgi-invoice-03"></i>
+                </div>
+                <div class="kpi-title">Arus Kas Bersih (Net)</div>
+              </div>
+              <div class="kpi-value" id="kpiNetBulan">Rp0</div>
+              <div class="kpi-trend">
+                <span class="trend-badge neutral" id="kpiStatusRasio">Sehat</span>
+                <span class="trend-label">Surplus bulan ini</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: 12-Month Pill Bar Chart & Kas Health -->
+          <div class="dash-row-grid">
+            <!-- Card Kiri: Pill Bar Chart 12 Bulan -->
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <div>
+                  <h3 class="dash-card-title">Arus Kas — 12 Bulan Terakhir</h3>
+                  <div class="dash-card-subtitle" id="chartYearSubtitle">Distribusi pergerakan kas per bulan</div>
+                </div>
+              </div>
+
+              <div class="chart-card-top">
+                <div class="chart-big-metric" id="chartTotalTahun">Rp0</div>
+                <span class="chart-metric-badge" id="chartBadgeBulan">Bulan Aktif</span>
+                <span class="chart-subtext">Total perputaran kas tahun ini</span>
+              </div>
+
+              <!-- Visual 12-Month Pill Bars -->
+              <div class="pill-chart-container" id="pillChartContainer">
+                <!-- Diisi otomatis oleh JavaScript (JAN - DEC) -->
+              </div>
+            </div>
+
+            <!-- Card Kanan: Kesehatan Kas (Health & Budget) -->
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <h3 class="dash-card-title">Kesehatan Kas</h3>
+                <span class="dash-card-subtitle" id="healthPeriodLabel">Bulan Ini</span>
+              </div>
+
+              <div class="health-summary">
+                <div class="health-main-val">
+                  <span id="healthSaldoSisa" class="is-number">Rp0</span>
+                  <span>sisa kas</span>
+                </div>
+                <div class="health-subtitle" id="healthPemasukanTarget">dari total pemasukan kas</div>
+
+                <!-- Progress Bar -->
+                <div class="progress-wrap">
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="healthProgressBar" style="width: 0%;"></div>
+                  </div>
+                  <div class="progress-labels">
+                    <span id="pctKeluarUsed" class="is-number">0% terpakai</span>
+                    <span id="pctSisaRemaining" class="is-number">100% tersisa</span>
+                  </div>
+                </div>
+
+                <!-- Breakdown Items -->
+                <div class="health-list">
+                  <div class="health-item">
+                    <span class="item-label">Total Pemasukan MTD</span>
+                    <span class="item-val" id="hlMasuk">Rp0</span>
+                  </div>
+                  <div class="health-item">
+                    <span class="item-label">Total Pengeluaran MTD</span>
+                    <span class="item-val" id="hlKeluar">Rp0</span>
+                  </div>
+                  <div class="health-item">
+                    <span class="item-label">Surplus / Arus Kas</span>
+                    <span class="item-val" id="hlSurplus">Rp0</span>
+                  </div>
+                  <div class="health-item">
+                    <span class="item-label">Sisa Hari di Bulan Ini</span>
+                    <span class="item-val" id="hlHariSisa">0 hari</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 3: Spend By Category & Recent Activity Feed -->
+          <div class="dash-row-grid">
+            <!-- Card Kiri: Pengeluaran Berdasarkan Pos -->
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <h3 class="dash-card-title">Pengeluaran Berdasarkan Pos</h3>
+                <span class="dash-card-subtitle">Realisasi Pos Anggaran</span>
+              </div>
+
+              <table class="category-table">
+                <thead>
+                  <tr>
+                    <th>Pos Pengeluaran</th>
+                    <th>Realisasi (MTD)</th>
+                    <th>Porsi Belanja</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="kategoriSpendBody">
+                  <!-- Diisi otomatis oleh JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Card Kanan: Recent Activity Feed -->
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <h3 class="dash-card-title">Aktivitas Transaksi Terbaru</h3>
+                <span class="dash-card-subtitle">5 Transaksi Terakhir</span>
+              </div>
+
+              <div class="activity-feed" id="recentActivityList">
+                <!-- Diisi otomatis oleh JavaScript -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- VIEW 2: TRANSAKSI KAS LENGKAP                              -->
+        <!-- ========================================================== -->
+        <section id="tab-transaksi" class="tab-content">
+          <div class="table-card-container">
+            <div class="table-card-header">
+              <h3>Daftar Riwayat Transaksi Kas</h3>
+              <div class="table-actions">
+                <input type="text" id="searchTransaksiInput" class="search-table-input"
+                  placeholder="Cari keterangan / pihak...">
+                <button type="button" class="btn btn-cta btn-cta-secondary" onclick="bukaModalTransaksi()">
+                  <i class="hgi hgi-stroke hgi-rounded hgi-plus"></i> Tambah Transaksi
+                </button>
+              </div>
+            </div>
+
+            <table class="table daftar-transaksi-tbl">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Keterangan</th>
+                  <th>Jenis</th>
+                  <th>Subjek</th>
+                  <th>Pihak / Pos</th>
+                  <th>Jumlah</th>
+                  <th>Dibuat</th>
+                  <th>Diperbarui</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="daftarTransaksi"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- VIEW 3: DATA ANGGOTA                                       -->
+        <!-- ========================================================== -->
+        <section id="tab-anggota" class="tab-content">
+          <!-- Form Tambah/Edit Anggota -->
+          <div class="form-card">
+            <h3 id="judulFormAnggota">Tambah Data Anggota</h3>
+
+            <form id="formAnggota" class="form-grid">
+              <input type="hidden" id="idAnggota">
+
+              <div class="form-group">
+                <label for="nomorAnggota">Nomor Anggota</label>
+                <input type="text" id="nomorAnggota" class="is-number" placeholder="Contoh: AGT-004">
+              </div>
+
+              <div class="form-group">
+                <label for="namaAnggota">Nama Lengkap *</label>
+                <input type="text" id="namaAnggota" placeholder="Nama anggota" required>
+              </div>
+
+              <div class="form-group">
+                <label for="teleponAnggota">No. Telepon / WhatsApp</label>
+                <input type="text" id="teleponAnggota" placeholder="Contoh: 08123456789">
+              </div>
+
+              <div class="form-group">
+                <label for="statusAnggota">Status Keanggotaan</label>
+                <select id="statusAnggota" onchange="toggleFormPengalihanAnggota()">
+                  <option value="aktif">Aktif</option>
+                  <option value="tidak_aktif">Tidak Aktif</option>
+                  <option value="dialihkan">Dialihkan (Ke Orang Lain)</option>
+                </select>
+              </div>
+
+              <!-- Form Dinamis Pengalihan Keanggotaan -->
+              <div id="groupPengalihanWrap" class="form-grid"
+                style="grid-column: 1 / -1; display: none; background: #fffbeb; padding: 1.25rem; border-radius: 8px; border: 1px dashed #fde68a;">
+                <div class="form-group">
+                  <label for="dialihkanKeId">Dialihkan Ke Siapa? (Anggota Pengganti) *</label>
+                  <select id="dialihkanKeId">
+                    <option value="">-- Pilih Anggota Pengganti --</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="pengalihanMulai">Tanggal Mulai Pengalihan</label>
+                  <input type="date" id="pengalihanMulai">
+                </div>
+                <div class="form-group">
+                  <label for="pengalihanSelesai">Tanggal Berakhir Pengalihan (Durasi)</label>
+                  <input type="date" id="pengalihanSelesai">
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                  <label for="catatanPengalihan">Catatan / Alasan Pengalihan</label>
+                  <input type="text" id="catatanPengalihan"
+                    placeholder="Contoh: Pengalihan hak keanggotaan selama dinas luar kota">
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" id="tombolSimpanAnggota" class="btn btn-primary">
+                  Simpan Anggota
+                </button>
+                <button type="button" id="tombolBatalAnggota" class="btn btn-secondary" hidden>
+                  Batal Edit
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tabel Anggota -->
+          <div class="table-card-container">
+            <div class="table-card-header">
+              <h3>Daftar Anggota Organisasi</h3>
+              <input type="text" id="searchAnggotaInput" class="search-table-input"
+                placeholder="Cari nama / nomor anggota...">
+            </div>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>No. Anggota</th>
+                  <th>Nama Lengkap</th>
+                  <th>Telepon</th>
+                  <th>Status</th>
+                  <th>Dibuat</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="daftarAnggota"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- VIEW 5: EVENT & BUDGET                                     -->
+        <!-- ========================================================== -->
+        <section id="tab-event" class="tab-content">
+          <div class="form-card">
+            <h3 id="judulFormEvent">Tambah Event & Anggaran</h3>
+            <form id="formEvent" class="form-grid">
+              <input type="hidden" id="idEvent">
+
+              <div class="form-group">
+                <label for="namaEvent">Nama Event / Kegiatan *</label>
+                <input type="text" id="namaEvent" placeholder="Contoh: HUT Organisasi Ke-10" required>
+              </div>
+
+              <div class="form-group">
+                <label for="anggaranEvent">Alokasi Anggaran (Rp) *</label>
+                <input type="number" id="anggaranEvent" min="0" placeholder="Contoh: 5000000" required>
+              </div>
+
+              <div class="form-group">
+                <label for="periodeIdEvent">Periode Keuangan</label>
+                <select id="periodeIdEvent">
+                  <option value="">-- Pilih Periode Keuangan --</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="statusEvent">Status Event</label>
+                <select id="statusEvent">
+                  <option value="perencanaan">Perencanaan</option>
+                  <option value="berjalan" selected>Berjalan</option>
+                  <option value="selesai">Selesai</option>
+                  <option value="dibatalkan">Dibatalkan</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="tanggalMulaiEvent">Tanggal Mulai</label>
+                <input type="date" id="tanggalMulaiEvent">
+              </div>
+
+              <div class="form-group">
+                <label for="tanggalSelesaiEvent">Tanggal Selesai (Durasi)</label>
+                <input type="date" id="tanggalSelesaiEvent">
+              </div>
+
+              <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="deskripsiEvent">Deskripsi / Rincian Program Kegiatan</label>
+                <input type="text" id="deskripsiEvent" placeholder="Contoh: Kegiatan perlombaan dan syukuran bersama">
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" id="tombolSimpanEvent" class="btn btn-primary">Simpan Event</button>
+                <button type="button" id="tombolBatalEvent" class="btn btn-secondary" hidden>Batal Edit</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tabel Event & Budget -->
+          <div class="table-card-container">
+            <div class="table-card-header">
+              <h3>Daftar Program Event & Realisasi Anggaran</h3>
+            </div>
+            <table class="table daftar-event-tbl">
+              <thead>
+                <tr>
+                  <th>Nama Event</th>
+                  <th>Periode / Durasi</th>
+                  <th>Alokasi Budget</th>
+                  <th>Realisasi Belanja</th>
+                  <th>Sisa Anggaran</th>
+                  <th>Penyerapan</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="daftarEvent"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ========================================================== -->
+        <!-- VIEW 6: PENGATURAN KEUANGAN ADMINISTRATOR                  -->
+        <!-- ========================================================== -->
+        <section id="tab-settings" class="tab-content">
+          <!-- Seksi 1: Periode Waktu & Durasi Keuangan -->
+          <div class="form-card" style="margin-bottom: 2rem;">
+            <h3 id="judulFormPeriode">Tetapkan Periode Keuangan & Durasi</h3>
+            <p style="font-size: 0.85rem; color: #64748b; margin-top: -0.25rem;">Atur tahun buku anggaran atau periode
+              kepengurusan aktif organisasi.</p>
+            <form id="formPeriode" class="form-grid">
+              <input type="hidden" id="idPeriode">
+
+              <div class="form-group">
+                <label for="namaPeriode">Nama Periode *</label>
+                <input type="text" id="namaPeriode" placeholder="Contoh: Tahun Buku 2026 / Kepengurusan 2026-2027"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <label for="tanggalMulaiPeriode">Tanggal Mulai *</label>
+                <input type="date" id="tanggalMulaiPeriode" required>
+              </div>
+
+              <div class="form-group">
+                <label for="tanggalSelesaiPeriode">Tanggal Selesai (Akhir Periode) *</label>
+                <input type="date" id="tanggalSelesaiPeriode" required>
+              </div>
+
+              <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem;">
+                <input type="checkbox" id="isAktifPeriode" value="1" style="width: auto;">
+                <label for="isAktifPeriode" style="margin: 0; cursor: pointer;">Jadikan Sebagai Periode Aktif Saat
+                  Ini</label>
+              </div>
+
+              <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="keteranganPeriode">Catatan / Keterangan Periode</label>
+                <input type="text" id="keteranganPeriode" placeholder="Contoh: Periode anggaran tahun buku 2026">
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" id="tombolSimpanPeriode" class="btn btn-primary">Simpan Periode</button>
+                <button type="button" id="tombolBatalPeriode" class="btn btn-secondary" hidden>Batal Edit</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tabel Riwayat Periode Keuangan -->
+          <div class="table-card-container" style="margin-bottom: 2rem;">
+            <div class="table-card-header">
+              <h3>Daftar Periode Keuangan & Durasi</h3>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nama Periode</th>
+                  <th>Rentang Waktu (Mulai - Selesai)</th>
+                  <th>Status</th>
+                  <th>Keterangan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="daftarPeriode"></tbody>
+            </table>
+          </div>
+
+          <!-- Seksi 2: Tarif Iuran Bulanan Berdasarkan Status Anggota -->
+          <div class="form-card">
+            <h3>Tarif Iuran Bulanan Berdasarkan Status Anggota</h3>
+            <p style="font-size: 0.85rem; color: #64748b; margin-top: -0.25rem;">Tetapkan besaran iuran rutin bulanan
+              untuk tiap status anggota (Aktif, Tidak Aktif, Dialihkan).</p>
+
+            <form id="formTarifIuran">
+              <div class="tarif-grid">
+                <!-- Status Aktif -->
+                <div class="tarif-card">
+                  <div class="tarif-card-header">
+                    <h4>Anggota Aktif</h4>
+                    <span class="badge-status aktif">Aktif</span>
+                  </div>
+                  <div class="tarif-input-wrap">
+                    <label for="tarifAktif">Nominal Iuran Bulanan (Rp)</label>
+                    <input type="number" id="tarifAktif" min="0" placeholder="Contoh: 50000" required>
+                  </div>
+                  <input type="text" id="descTarifAktif" class="tarif-desc-input" placeholder="Keterangan iuran aktif">
+                </div>
+
+                <!-- Status Tidak Aktif -->
+                <div class="tarif-card">
+                  <div class="tarif-card-header">
+                    <h4>Anggota Tidak Aktif</h4>
+                    <span class="badge-status tidak_aktif">Tidak Aktif</span>
+                  </div>
+                  <div class="tarif-input-wrap">
+                    <label for="tarifTidakAktif">Nominal Iuran Bulanan (Rp)</label>
+                    <input type="number" id="tarifTidakAktif" min="0" placeholder="Contoh: 0" required>
+                  </div>
+                  <input type="text" id="descTarifTidakAktif" class="tarif-desc-input"
+                    placeholder="Keterangan nonaktif / cuti">
+                </div>
+
+                <!-- Status Dialihkan -->
+                <div class="tarif-card">
+                  <div class="tarif-card-header">
+                    <h4>Anggota Dialihkan</h4>
+                    <span class="badge-status dialihkan">Dialihkan</span>
+                  </div>
+                  <div class="tarif-input-wrap">
+                    <label for="tarifDialihkan">Nominal Iuran Bulanan (Rp)</label>
+                    <input type="number" id="tarifDialihkan" min="0" placeholder="Contoh: 50000" required>
+                  </div>
+                  <input type="text" id="descTarifDialihkan" class="tarif-desc-input"
+                    placeholder="Keterangan anggota dialihkan">
+                </div>
+              </div>
+
+              <div class="form-actions" style="margin-top: 1.5rem;">
+                <button type="submit" id="tombolSimpanTarif" class="btn btn-primary">
+                  Simpan Semua Tarif Iuran
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+        <section id="tab-pos" class="tab-content">
+          <!-- Form Tambah/Edit Pos -->
+          <div class="form-card">
+            <h3 id="judulFormPos">Tambah Pos Pengeluaran</h3>
+
+            <form id="formPos" class="form-grid">
+              <input type="hidden" id="idPos">
+
+              <div class="form-group">
+                <label for="namaPos">Nama Pos Pengeluaran *</label>
+                <input type="text" id="namaPos" placeholder="Contoh: Operasional & Kebersihan" required>
+              </div>
+
+              <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="deskripsiPos">Deskripsi / Peruntukan</label>
+                <input type="text" id="deskripsiPos" placeholder="Penjelasan kebutuhan pos ini...">
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" id="tombolSimpanPos" class="btn btn-primary">
+                  Simpan Pos
+                </button>
+                <button type="button" id="tombolBatalPos" class="btn btn-secondary" hidden>
+                  Batal Edit
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Tabel Pos Pengeluaran -->
+          <div class="table-card-container">
+            <div class="table-card-header">
+              <h3>Daftar Pos Pengeluaran</h3>
+            </div>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nama Pos</th>
+                  <th>Deskripsi</th>
+                  <th>Dibuat</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="daftarPos"></tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL INPUT / EDIT TRANSAKSI KAS                               -->
+  <!-- ============================================================== -->
+  <div id="modalTransaksi" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="judulModalTransaksi">Catat Transaksi Kas</h3>
+        <button type="button" class="btn-close-modal" onclick="tutupModalTransaksi()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="formTransaksi" class="form-grid form-transaksi">
+          <input type="hidden" id="idTransaksi">
+
+          <div class="form-group">
+            <label for="tanggal">Tanggal Transaksi *</label>
+            <input type="date" id="tanggal" required>
+          </div>
+
+          <div class="form-group">
+            <label>Tipe Transaksi *</label>
+            <div class="radio-group" id="jenis">
+              <label class="radio-option">
+                <input type="radio" name="jenis" value="masuk" checked>
+                <span class="radio-option__label">Pemasukan</span>
+              </label>
+
+              <label class="radio-option">
+                <input type="radio" name="jenis" value="keluar">
+                <span class="radio-option__label">Pengeluaran</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Opsi Subjek Pemasukan -->
+          <div class="form-group" id="groupSubjekMasuk">
+            <label for="subjekMasuk">Subjek Pemasukan</label>
+            <select id="subjekMasuk">
+              <option value="Iuran Keanggotaan">Iuran Keanggotaan</option>
+              <option value="Pendaftaran Anggota">Pendaftaran Anggota</option>
+              <option value="Donasi / Sumbangan">Donasi / Sumbangan</option>
+              <option value="Penjualan / Usaha">Penjualan / Usaha</option>
+              <option value="Lainnya">Pemasukan Lainnya</option>
+            </select>
+          </div>
+
+          <!-- Opsi Pilih Anggota -->
+          <div class="form-group" id="groupAnggota">
+            <label for="anggotaId">Nama Anggota Pembayar</label>
+            <select id="anggotaId">
+              <option value="">-- Pilih Anggota --</option>
+            </select>
+          </div>
+
+          <!-- Opsi Pos Pengeluaran -->
+          <div class="form-group" id="groupPosPengeluaran" style="display: none;">
+            <label for="posPengeluaranId">Pos Pengeluaran *</label>
+            <select id="posPengeluaranId">
+              <option value="">-- Pilih Pos Pengeluaran --</option>
+            </select>
+          </div>
+
+          <!-- Opsi Kaitkan ke Event (Opsional) -->
+          <div class="form-group" id="groupEvent">
+            <label for="transaksiEventId">Kaitkan ke Event / Acara (Opsional)</label>
+            <select id="transaksiEventId">
+              <option value="">-- Tanpa Event (Umum) --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="jumlah">Jumlah Nominal (Rp) *</label>
+            <input type="number" id="jumlah" placeholder="Contoh: 100000" min="1" required>
+          </div>
+
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label for="keterangan">Keterangan / Deskripsi *</label>
+            <input type="text" id="keterangan" placeholder="Contoh: Iuran kas bulanan" required>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="tombolSimpan" class="btn btn-primary">
+              Simpan Transaksi
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="tutupModalTransaksi()">
+              Batal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL PRATINJAU & CETAK LAPORAN KAS (PDF)                       -->
+  <!-- ============================================================== -->
+  <div id="modalLaporanPdf" class="modal-report-backdrop">
+    <div class="modal-report-container">
+      <div class="report-modal-header">
+        <div class="report-modal-title">
+          <h3>
+            <span><i class="hgi hgi-stroke hgi-rounded hgi-file-02"></i></span>
+            Pratinjau Dokumen Laporan Keuangan Kas
+          </h3>
+          <p>Format Standar Akuntansi A4 &mdash; Siap Dicetak Langsung atau Disimpan Sebagai PDF</p>
+        </div>
+
+        <div class="report-modal-actions">
+          <label for="pilihPeriodeLaporanPdf" style="font-size: 0.85rem; font-weight: 600; color: #475569;">Filter
+            Periode:</label>
+          <select id="pilihPeriodeLaporanPdf" class="report-period-select" onchange="renderLaporanPdf()">
+            <option value="bulan_ini">Bulan Berjalan</option>
+            <option value="semua">Semua Transaksi (Keseluruhan)</option>
+          </select>
+
+          <button type="button" class="btn btn-primary btn-pill" onclick="cetakLaporanPdf()">
+            <span><i class="hgi hgi-stroke hgi-rounded hgi-printer"></i></span>
+            <span>Cetak / Unduh PDF</span>
+          </button>
+
+          <button type="button" class="btn btn-light btn-pill" onclick="eksporLaporanKas()"
+            title="Unduh format spreadsheet CSV">
+            <span><i class="hgi hgi-stroke hgi-rounded hgi-csv-01"></i></span>
+            <span>CSV</span>
+          </button>
+
+          <button type="button" class="btn btn-secondary btn-circle" onclick="tutupModalLaporanPdf()" title="Tutup">
+            &times;
+          </button>
+        </div>
+      </div>
+
+      <div class="report-preview-viewport">
+        <div id="printableReport" class="report-sheet">
+          <!-- Diisi otomatis oleh JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/transaksi.js"></script>
+</body>
+
+</html>

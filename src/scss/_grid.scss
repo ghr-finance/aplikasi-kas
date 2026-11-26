@@ -1,0 +1,122 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+// ============================================================
+// GLOBAL GRID & LAYOUT UTILITIES
+// Fleksibel, responsif, dan decoupled
+// ============================================================
+
+// ------------------------------------------------------------
+// 1. CSS GRID SYSTEM
+// ------------------------------------------------------------
+.grid {
+  display: grid;
+  gap: 1.25rem;
+  box-sizing: border-box;
+}
+
+// Columns
+.grid-cols-1  { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4  { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-cols-5  { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.grid-cols-6  { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+// Auto-Fit (Otomatis wrap responsif berdasarkan min-width)
+.grid-auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.grid-auto-fit-sm {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.grid-auto-fit-lg {
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+}
+
+// Column Spans
+.col-span-1   { grid-column: span 1 / span 1; }
+.col-span-2   { grid-column: span 2 / span 2; }
+.col-span-3   { grid-column: span 3 / span 3; }
+.col-span-4   { grid-column: span 4 / span 4; }
+.col-span-6   { grid-column: span 6 / span 6; }
+.col-span-12  { grid-column: span 12 / span 12; }
+.col-span-full { grid-column: 1 / -1; }
+
+// Responsif Otomatis untuk Layar Sedang & Kecil
+@include screen-down(lg) {
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include screen-down(md) {
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4,
+  .grid-cols-6,
+  .grid-cols-12 {
+    grid-template-columns: 1fr;
+  }
+
+  .col-span-2,
+  .col-span-3,
+  .col-span-4,
+  .col-span-6 {
+    grid-column: span 1;
+  }
+}
+
+// ------------------------------------------------------------
+// 2. GAP UTILITIES
+// ------------------------------------------------------------
+.gap-0 { gap: 0; }
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.gap-5 { gap: 1.25rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+
+// ------------------------------------------------------------
+// 3. FLEXBOX UTILITIES
+// ------------------------------------------------------------
+.flex         { display: flex; }
+.inline-flex  { display: inline-flex; }
+
+// Direction
+.flex-row     { flex-direction: row; }
+.flex-col     { flex-direction: column; }
+.flex-wrap    { flex-wrap: wrap; }
+.flex-nowrap  { flex-wrap: nowrap; }
+
+// Align Items
+.items-start    { align-items: flex-start; }
+.items-center   { align-items: center; }
+.items-end      { align-items: flex-end; }
+.items-stretch  { align-items: stretch; }
+.items-baseline { align-items: baseline; }
+
+// Justify Content
+.justify-start    { justify-content: flex-start; }
+.justify-center   { justify-content: center; }
+.justify-end      { justify-content: flex-end; }
+.justify-between  { justify-content: space-between; }
+.justify-around   { justify-content: space-around; }
+
+// Sizing Helpers
+.flex-1     { flex: 1 1 0%; }
+.flex-auto  { flex: 1 1 auto; }
+.flex-none  { flex: none; }
+.flex-grow  { flex-grow: 1; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+.w-full     { width: 100%; }
+.h-full     { height: 100%; }

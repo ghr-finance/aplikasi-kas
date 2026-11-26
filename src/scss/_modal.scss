@@ -1,0 +1,98 @@
+@use "theme" as *;
+@use "variables" as *;
+@use "mixins" as *;
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease-in-out;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+
+    .modal-box {
+      transform: scale(1) translateY(0);
+    }
+  }
+}
+
+.modal-box {
+  background: #ffffff;
+  border-radius: $radius-xl;
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: $shadow-modal;
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1.75rem 1rem;
+    border-bottom: 1px solid $border-color;
+
+    h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: $text-main;
+      letter-spacing: -0.02em;
+    }
+
+    .btn-close-modal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: $text-light;
+      cursor: pointer;
+      padding: 0.25em;
+      border-radius: 50%;
+      line-height: normal;
+      transition: color 0.15s, background 0.15s;
+      aspect-ratio: 1;
+
+      &:hover {
+        color: $text-main;
+        background: #f1f5f9;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 1.5rem 1.75rem 1.75rem;
+  }
+}
+
+.form-transaksi {
+  .form-group {
+    select {
+      &:has(option:checked[value="masuk"]) {
+        color: $success-text;
+        background-color: $success-light;
+      }
+
+      &:has(option:checked[value="keluar"]) {
+        color: $warning-text;
+        background-color: $warning-light;
+      }
+    }
+  }
+}

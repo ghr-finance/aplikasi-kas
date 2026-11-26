@@ -1,0 +1,47 @@
+@use "sass:map";
+@use "sass:math";
+@use "variables" as *;
+
+// Screen minimum width
+@mixin screen-up($size) {
+    $breakpoint: map.get($breakpoints, $size);
+
+    @if $breakpoint ==null {
+        @error "Unknown breakpoint `#{$size}`.";
+    }
+
+    @media (min-width: $breakpoint) {
+        @content;
+    }
+}
+
+// Screen maximum width
+@mixin screen-down($size) {
+    $breakpoint: map.get($breakpoints, $size);
+
+    @if $breakpoint ==null {
+        @error "Unknown breakpoint `#{$size}`.";
+    }
+
+    @media (max-width: #{ $breakpoint - 0.02px }) {
+        @content;
+    }
+}
+
+// Screen between two breakpoints
+@mixin screen-between($min, $max) {
+    $min-width: map.get($breakpoints, $min);
+    $max-width: map.get($breakpoints, $max);
+
+    @if $min-width ==null or $max-width ==null {
+        @error "Invalid breakpoint: `#{$min}` or `#{$max}`.";
+    }
+
+    @if $min-width >=$max-width {
+        @error "The minimum breakpoint must be smaller than the maximum breakpoint.";
+    }
+
+    @media (min-width: $min-width) and (max-width: #{ $max-width - 0.02px }) {
+        @content;
+    }
+}
